@@ -2,12 +2,16 @@ import requests
 from datetime import datetime, timedelta
 import pytz
 import streamlit as st
+import warnings
+
+# Suppress the deprecation warning for st.experimental_get_query_params
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 # Set the title of the web app
 st.title("Check Your Availability")
 
-# Get query parameters from the URL
-query_params = st.query_params
+# Use experimental_get_query_params to retrieve values from the URL
+query_params = st.experimental_get_query_params()
 default_username = query_params.get("username", [""])[0]
 default_event_type_id = query_params.get("event_type_id", [""])[0]
 default_api_key = query_params.get("api_key", [""])[0]
