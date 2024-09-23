@@ -6,10 +6,16 @@ import streamlit as st
 # Set the title of the web app
 st.title("Check Your Availability")
 
-# Input for username and other options
-username = st.text_input("Enter your Cal.com username", "samielsolh")
-event_type_id = st.text_input("Enter Event Type ID", "1027409")
-api_key = st.text_input("Enter API Key", type="password")
+# Get query parameters from the URL
+query_params = st.experimental_get_query_params()
+default_username = query_params.get("username", ["samielsolh"])[0]
+default_event_type_id = query_params.get("event_type_id", ["1027409"])[0]
+default_api_key = query_params.get("api_key", [""])[0]
+
+# Input for username, event ID, and API key (from URL if available)
+username = st.text_input("Enter your Cal.com username", default_username)
+event_type_id = st.text_input("Enter Event Type ID", default_event_type_id)
+api_key = st.text_input("Enter API Key", type="password", value=default_api_key)
 
 # Get the current date and time, and the date and time 7 days from now
 start_datetime = datetime.now(pytz.UTC)
@@ -110,3 +116,4 @@ if st.button("Check Availability"):
     else:
         st.error(f"Failed to fetch availability. Status code: {response.status_code}")
         st.error(f"Response: {response.text[:500]}")
+
