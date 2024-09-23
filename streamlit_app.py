@@ -8,8 +8,8 @@ st.title("Check Your Availability")
 
 # Get query parameters from the URL
 query_params = st.query_params
-default_username = query_params.get("username", ["samielsolh"])[0]
-default_event_type_id = query_params.get("event_type_id", ["1027409"])[0]
+default_username = query_params.get("username", [""])[0]
+default_event_type_id = query_params.get("event_type_id", [""])[0]
 default_api_key = query_params.get("api_key", [""])[0]
 
 # Input for username, event ID, and API key (from URL if available)
