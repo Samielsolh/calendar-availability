@@ -7,7 +7,7 @@ import streamlit as st
 st.title("Check Your Availability")
 
 # Get query parameters from the URL
-query_params = st.experimental_get_query_params()
+query_params = st.query_params
 default_username = query_params.get("username", ["samielsolh"])[0]
 default_event_type_id = query_params.get("event_type_id", ["1027409"])[0]
 default_api_key = query_params.get("api_key", [""])[0]
@@ -17,9 +17,20 @@ username = st.text_input("Enter your Cal.com username", default_username)
 event_type_id = st.text_input("Enter Event Type ID", default_event_type_id)
 api_key = st.text_input("Enter API Key", type="password", value=default_api_key)
 
-# Get the current date and time, and the date and time 7 days from now
-start_datetime = datetime.now(pytz.UTC)
-end_datetime = start_datetime + timedelta(days=7)
+# Get the default start and end dates for the next 7 days
+default_start_date = datetime.now().date()
+default_end_date = default_start_date + timedelta(days=7)
+
+# Add a date range selector
+start_date, end_date = st.date_input(
+    "Select a date range",
+    [default_start_date, default_end_date],
+    help="Default is the next 7 days."
+)
+
+# Convert dates to datetime with time zone awareness
+start_datetime = datetime.combine(start_date, datetime.min.time()).replace(tzinfo=pytz.UTC)
+end_datetime = datetime.combine(end_date, datetime.max.time()).replace(tzinfo=pytz.UTC)
 
 # Button to trigger API call
 if st.button("Check Availability"):
@@ -116,4 +127,3 @@ if st.button("Check Availability"):
     else:
         st.error(f"Failed to fetch availability. Status code: {response.status_code}")
         st.error(f"Response: {response.text[:500]}")
-
