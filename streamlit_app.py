@@ -69,7 +69,7 @@ if st.button("Check Availability"):
         end_date = end_datetime.astimezone(timezone).date()
 
         # Display the availability
-        st.write(f"Your availability for the next 7 days (Timezone: {timezone_str}):")
+        st.write(f"Does 30 min during any of these times (EST) work?")
 
         while current_date <= end_date:
             day_start = timezone.localize(datetime.combine(current_date, day_start_time))
